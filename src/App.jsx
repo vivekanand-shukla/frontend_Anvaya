@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 const API = 'http://localhost:3000';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -58,18 +58,18 @@ export default function App() {
                   </Link>
                 </li>
                 <li className="nav-item mb-2">
-                  <Link className="nav-link text-white" to="list">
-                    Sales Agents
+                  <Link className="nav-link text-white" to={`/list`} >
+                  Lead  List
                   </Link>
                 </li>
                 <li className="nav-item mb-2">
-                  <Link className="nav-link text-white" to="#">
-                    Reports
+                  <Link className="nav-link text-white" to="/agent">
+                   Sales Agent 
                   </Link>
                 </li>
                 <li className="nav-item mb-2">
-                  <Link className="nav-link text-white" to="#">
-                    Settings
+                  <Link className="nav-link text-white" to="/status">
+                    Status
                   </Link>
                 </li>
               </ul>
@@ -77,19 +77,21 @@ export default function App() {
           </div>
 
           {/* Main Content */}
-          {loading && (
-            <div className="d-flex align-items-center justify-content-center vh-100">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          )}
+    
 
           <div className="col-md-10 p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2>Anvaya CRM Dashboard</h2>
-              <button className="btn btn-success">+ Add New Lead</button>
+              <Link className="btn btn-success" to={`/add`}>+ Add New Lead</Link>
             </div>
+
+
+   {loading &&  <div className="d-flex align-items-center justify-content-center vh-100">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>}
+
 
             {/* Lead Status */}
             <div className="card mb-4">

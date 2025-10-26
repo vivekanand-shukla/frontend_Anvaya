@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const API = 'http://localhost:3000';
 
-export default function App() {
+export default function AllLead() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,29 +23,18 @@ export default function App() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="d-flex align-items-center justify-content-center vh-100">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <>
-      <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-      />
+
 
       <div className="d-flex vh-100">
         {/* Sidebar */}
         <div className="bg-dark text-white p-3" style={{ width: '250px', minHeight: '100vh' }}>
           <h4 className="mb-4">Anvaya CRM</h4>
           <div className="d-flex flex-column gap-2">
-            <button className="btn btn-primary text-start border-0">Leads</button>
+            <Link className="btn text-white text-start border-0" to="/"> ← Back to Dashboard</Link>
           </div>
         </div>
 
@@ -58,6 +47,11 @@ export default function App() {
               <div className="card-header bg-primary text-white">
                 <h5 className="mb-0">Leads ({leads.length})</h5>
               </div>
+               {loading &&  <div className="d-flex align-items-center justify-content-center vh-100">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>}
               <div className="card-body">
                 {leads.length === 0 ? (
                   <div className="text-center text-muted py-5">
@@ -122,6 +116,8 @@ export default function App() {
                   </div>
                 )}
               </div>
+
+             
             </div>
           </div>
         </div>

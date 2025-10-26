@@ -1,9 +1,15 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams ,Link } from 'react-router-dom';
 import axios from 'axios';
+
 
 const API = 'http://localhost:3000';
 
-export default function App() {
+export default function Lead() {
+  // Get lead ID from URL using useParams
+  const { id } = useParams();
+
+  // State variables
   const [lead, setLead] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,23 +17,21 @@ export default function App() {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
 
-  useEffect(() => {
-   
-    const parts = path.split('/');
-    const leadId = parts[parts.length - 1];
 
-    if (leadId) {
-      fetchLead(leadId);
-      fetchComments(leadId);
+  useEffect(() => {
+    if (id) {
+      getLead(id);
+      getComments(id);
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [id]);
 
-  const fetchLead = async (leadId) => {
+  // Get lead details
+  const getLead = async (id) => {
     try {
       const response = await axios.get(`${API}/leads`);
-      const foundLead = response.data.find((x) => x.id === leadId);
+      const foundLead = response.data.find((x) => x.id === id);
       setLead(foundLead);
       setLoading(false);
     } catch (error) {
@@ -36,117 +40,114 @@ export default function App() {
     }
   };
 
-  const fetchComments = async (leadId) => {
+  // Get all comments for this lead
+  const getComments = async (id) => {
     try {
-      const response = await axios.get(`${API}/leads/${leadId}/comments`);
+      const response = await axios.get(`${API}/leads/${id}/comments`);
       setComments(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  // Add a new comment
   const addComment = async () => {
     if (!newComment.trim()) return;
-    try {
-      
-      const parts = path.split('/');
-      const leadId = parts[parts.length - 1];
 
-      await axios.post(`${API}/leads/${leadId}/comments`, {
+    try {
+      await axios.post(`${API}/leads/${id}/comments`, {
         commentText: newComment,
         author: lead.salesAgent?.id,
       });
-
       setNewComment('');
-      fetchComments(leadId);
+      getComments(id);
     } catch (error) {
       console.error(error);
+      alert('Failed to add comment');
     }
   };
 
-  const updateComment = async (commentId) => {
-    if (!editText.trim()) return;
-    try {
-      const path = window.location.pathname;
-      const parts = path.split('/');
-      const leadId = parts[parts.length - 1];
+  // Start editing a comment
+  const startEdit = (comment) => {
+    setEditingId(comment.id);
+    setEditText(comment.commentText);
+  };
 
-      await axios.put(`${API}/leads/${leadId}/comments/${commentId}`, {
+  // Cancel editing
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditText('');
+  };
+
+  // Save edited comment
+  const saveEdit = async (commentId) => {
+    if (!editText.trim()) return;
+
+    try {
+      await axios.put(`${API}/leads/${id}/comments/${commentId}`, {
         commentText: editText,
       });
-
       setEditingId(null);
       setEditText('');
-      fetchComments(leadId);
+      getComments(id);
     } catch (error) {
       console.error(error);
+      alert('Failed to update comment');
     }
   };
 
+  // Delete a comment
   const deleteComment = async (commentId) => {
-    if (!confirm('Delete this comment?')) return;
-    try {
-      const path = window.location.pathname;
-      const parts = path.split('/');
-      const leadId = parts[parts.length - 1];
+    const confirm = window.confirm('Delete this comment?');
+    if (!confirm) return;
 
-      await axios.delete(`${API}/leads/${leadId}/comments/${commentId}`);
-      fetchComments(leadId);
+    try {
+      await axios.delete(`${API}/leads/${id}/comments/${commentId}`);
+      getComments(id);
     } catch (error) {
       console.error(error);
+      alert('Failed to delete comment');
     }
   };
 
-  if (loading) {
-    return (
-      <>
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-        <div className="d-flex align-items-center justify-content-center vh-100">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </>
-    );
-  }
+  // Show loading spinner
+  
 
+  // Show error if lead not found
   if (!lead) {
     return (
       <>
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
+
         <div className="d-flex align-items-center justify-content-center vh-100">
           <div className="text-center">
             <h3>Lead not found</h3>
             <p className="text-muted">Please provide a valid lead ID in the URL</p>
+            
             <small className="text-muted">Example: /lead/your-lead-id</small>
+
           </div>
         </div>
+
       </>
     );
   }
 
+  // Main page
   return (
     <>
-  
+
 
       <div className="d-flex vh-100">
         {/* Sidebar */}
         <div className="bg-dark text-white p-3" style={{ width: '250px', minHeight: '100vh' }}>
           <h4 className="mb-4">Anvaya CRM</h4>
-
           <div className="d-flex flex-column gap-2">
-            <button
+            <Link
               className="btn text-white text-start border-0"
-              onClick={() => (window.location.href = '/')}
+              to={`/`}
             >
               ← Back to Dashboard
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -156,6 +157,14 @@ export default function App() {
             <h2 className="mb-4">Lead Management: {lead.name}</h2>
 
             {/* Lead Details */}
+
+            {loading &&
+              <div className="d-flex align-items-center justify-content-center vh-100">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            }
             <div className="card mb-4">
               <div className="card-header bg-primary text-white">
                 <h5 className="mb-0">Lead Details</h5>
@@ -183,13 +192,12 @@ export default function App() {
                   <strong>Priority:</strong>
                   <p className="mb-0">
                     <span
-                      className={`badge ${
-                        lead.priority === 'High'
+                      className={`badge ${lead.priority === 'High'
                           ? 'bg-danger'
                           : lead.priority === 'Medium'
-                          ? 'bg-warning'
-                          : 'bg-success'
-                      }`}
+                            ? 'bg-warning'
+                            : 'bg-success'
+                        }`}
                     >
                       {lead.priority}
                     </span>
@@ -211,7 +219,9 @@ export default function App() {
                     </div>
                   </div>
                 )}
-                <button className="btn btn-warning w-100 mt-3">Edit Lead Details</button>
+                <button className="btn btn-warning w-100 mt-3">
+                  Edit Lead Details
+                </button>
               </div>
             </div>
 
@@ -225,9 +235,10 @@ export default function App() {
                   <p className="text-muted text-center py-4">No comments yet</p>
                 ) : (
                   <div>
-                    {comments.map((comment, index) => (
-                      <div key={index} className="border-bottom pb-3 mb-3">
+                    {comments.map((comment) => (
+                      <div key={comment.id} className="border-bottom pb-3 mb-3">
                         {editingId === comment.id ? (
+                          // Editing mode
                           <div>
                             <input
                               type="text"
@@ -238,22 +249,20 @@ export default function App() {
                             <div className="d-flex gap-2">
                               <button
                                 className="btn btn-sm btn-success"
-                                onClick={() => updateComment(comment.id)}
+                                onClick={() => saveEdit(comment.id)}
                               >
                                 Save
                               </button>
                               <button
                                 className="btn btn-sm btn-secondary"
-                                onClick={() => {
-                                  setEditingId(null);
-                                  setEditText('');
-                                }}
+                                onClick={cancelEdit}
                               >
                                 Cancel
                               </button>
                             </div>
                           </div>
                         ) : (
+                          // View mode
                           <>
                             <div className="d-flex justify-content-between mb-2">
                               <strong>{comment.author}</strong>
@@ -263,10 +272,7 @@ export default function App() {
                                 </small>
                                 <button
                                   className="btn btn-sm btn-outline-primary border-0"
-                                  onClick={() => {
-                                    setEditingId(comment.id);
-                                    setEditText(comment.commentText);
-                                  }}
+                                  onClick={() => startEdit(comment)}
                                   title="Edit"
                                 >
                                   ✏️
@@ -289,6 +295,7 @@ export default function App() {
                 )}
               </div>
 
+              {/* Add new comment */}
               <div className="card-footer">
                 <div className="mb-2">
                   <input
