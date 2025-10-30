@@ -54,11 +54,8 @@ export default function LeadList() {
 
   const filteredLeads = getFilteredLeads();
 
-
   return (
     <>
-     
-
       <div className="d-flex vh-100">
         {/* Sidebar */}
         <div className="bg-dark text-white p-3" style={{ width: '250px', minHeight: '100vh' }}>
@@ -67,7 +64,7 @@ export default function LeadList() {
           <div className="d-flex flex-column gap-2">
             <Link
               className="btn text-white text-start border-0"
-                 to={`/`}
+              to={`/`}
             >
               ← Back to Dashboard
             </Link>
@@ -78,11 +75,15 @@ export default function LeadList() {
         <div className="flex-fill overflow-auto bg-light">
           <div className="container-fluid p-4">
             <h2 className="mb-4">Lead List</h2>
-          {loading && <div className="d-flex align-items-center justify-content-center vh-100">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>}
+
+            {loading && (
+              <div className="d-flex align-items-center justify-content-center vh-100">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
+
             <div className="card mb-4">
               <div className="card-header bg-primary text-white">
                 <h5 className="mb-0">Lead Overview</h5>
@@ -139,20 +140,23 @@ export default function LeadList() {
 
                 {/* Sort by */}
                 <h6 className="mb-3">Sort by:</h6>
-                <div className="btn-group mb-4" role="group">
+                <div className="btn-group mb-4 d-flex flex-wrap" role="group">
                   <button
-                    className={`btn ${sortBy === 'priority' ? 'btn-primary' : 'btn-outline-primary'}`}
+                    className={`btn flex-fill ${sortBy === 'priority' ? 'btn-primary' : 'btn-outline-primary'}`}
                     onClick={() => setSortBy('priority')}
                   >
                     Priority
                   </button>
                   <button
-                    className={`btn ${sortBy === 'time' ? 'btn-primary' : 'btn-outline-primary'}`}
+                    className={`btn flex-fill ${sortBy === 'time' ? 'btn-primary' : 'btn-outline-primary'}`}
                     onClick={() => setSortBy('time')}
                   >
                     Time to Close
                   </button>
-                  <button className="btn btn-outline-secondary" onClick={() => setSortBy('')}>
+                  <button
+                    className="btn flex-fill btn-outline-secondary"
+                    onClick={() => setSortBy('')}
+                  >
                     Clear Sort
                   </button>
                 </div>
@@ -225,6 +229,90 @@ export default function LeadList() {
           </div>
         </div>
       </div>
+
+     
+      <style>
+        {`
+@media (max-width: 550px) {
+  .vh-100 {
+    height: auto !important;
+  }
+
+  .d-flex.vh-100 {
+    flex-direction: column !important;
+  }
+
+  .bg-dark {
+    width: 100% !important;
+    min-height: auto !important;
+    text-align: center !important;
+    padding: 1rem !important;
+  }
+
+  .bg-dark h4 {
+    font-size: 1.2rem !important;
+  }
+
+  .bg-dark a {
+    display: block !important;
+    margin: 10px auto !important;
+  }
+
+  .flex-fill {
+    width: 100% !important;
+  }
+
+  .container-fluid {
+    padding: 1rem !important;
+  }
+
+  h2 {
+    font-size: 1.4rem !important;
+    text-align: center !important;
+  }
+
+  .card {
+    margin-bottom: 1.2rem !important;
+  }
+
+  .card-header h5 {
+    font-size: 1rem !important;
+  }
+
+  .card-body {
+    padding: 1rem !important;
+  }
+
+  .btn,
+  .form-select {
+    font-size: 0.9rem !important;
+  }
+
+  .btn-group {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .btn-group .btn {
+    width: 100% !important;
+    margin-bottom: 5px !important;
+  }
+
+  .list-group-item {
+    font-size: 0.9rem !important;
+    padding: 0.8rem !important;
+  }
+
+  .list-group-item h5 {
+    font-size: 1rem !important;
+  }
+
+  .badge {
+    font-size: 0.75rem !important;
+  }
+}
+        `}
+      </style>
     </>
   );
 }

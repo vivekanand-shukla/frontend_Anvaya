@@ -1,0 +1,15 @@
+/* 👇 Sidebar moves to top under 550px width */
+@media (max-width: 550px) {
+  .responsive-layout {
+    flex-direction: column !important;
+  }
+
+  .sidebar {
+    min-height: auto !important;
+    width: 100% !important;
+  }
+
+  .main-content {
+    width: 100% !important;
+  }
+}
