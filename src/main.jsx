@@ -10,6 +10,8 @@ import AddLead from "./Pages/AddLead"
 import SalesAgent from "./Pages/SalesAgent"
 import StatusLead from "./Pages/StatusView"
 import AddAgent from './Pages/AddAgent'
+import AgentView from './Pages/AgentView'
+import Report from './Pages/Report'
 const routes = createBrowserRouter([
   {path: "/" , element:<App/> } ,
   {path: "/lead/:id" , element:<Lead/> } ,
@@ -19,6 +21,8 @@ const routes = createBrowserRouter([
    {path: "/agent" , element:<SalesAgent/> } ,
    {path: "/status" , element:<StatusLead/> } ,
    {path: "/addagent" , element:<AddAgent/> } ,
+   {path: "/agentview" , element:<AgentView/> } ,
+   {path: "/report" , element:<Report/> } ,
 
 ])
 createRoot(document.getElementById('root')).render(

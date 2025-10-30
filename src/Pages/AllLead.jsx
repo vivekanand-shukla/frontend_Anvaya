@@ -31,7 +31,7 @@ export default function AllLead() {
 
       <div className="d-flex vh-100">
         {/* Sidebar */}
-        <div className="bg-dark text-white p-3" style={{ width: '250px', minHeight: '100vh' }}>
+        <div className="bg-dark text-white p-3" style={{ width: '370px', minHeight: '100vh' }}>
           <h4 className="mb-4">Anvaya CRM</h4>
           <div className="d-flex flex-column gap-2">
             <Link className="btn text-white text-start border-0" to="/"> ← Back to Dashboard</Link>

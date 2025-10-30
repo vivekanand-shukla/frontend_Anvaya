@@ -69,7 +69,17 @@ export default function App() {
                 </li>
                 <li className="nav-item mb-2">
                   <Link className="nav-link text-white" to="/status">
-                    Status
+                    Status View
+                  </Link>
+                </li>
+                <li className="nav-item mb-2">
+                  <Link className="nav-link text-white" to="/agentview">
+                    Agent View
+                  </Link>
+                </li>
+                <li className="nav-item mb-2">
+                  <Link className="nav-link text-white" to="/report">
+                    Report
                   </Link>
                 </li>
               </ul>
