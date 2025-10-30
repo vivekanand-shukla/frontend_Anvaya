@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Pie, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Link } from 'react-router-dom';
-const API = 'http://localhost:3000';
+import {useMainUrl} from  "./useMainUrl"
+const { mainUrl } = useMainUrl()
+const API = mainUrl;
 
 export default function App() {
   const [d, setD] = useState([]);

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const API = "http://localhost:3000";
+import {useMainUrl} from  "./useMainUrl"
+const { mainUrl } = useMainUrl()
+const API = mainUrl;
 
 export default function AddAgent() {
   const [form, setForm] = useState({

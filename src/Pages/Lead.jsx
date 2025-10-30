@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const API = 'http://localhost:3000';
+import {useMainUrl} from  "./useMainUrl"
+const { mainUrl } = useMainUrl()
+const API = mainUrl;
 
 export default function Lead() {
   const { id } = useParams();

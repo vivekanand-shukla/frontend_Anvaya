@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './App.css'; 
-
-const API = 'http://localhost:3000';
+import {useMainUrl} from  "./Pages/useMainUrl"
+const { mainUrl } = useMainUrl()
+const API = mainUrl;
 
 export default function App() {
   const [leads, setLeads] = useState([]);

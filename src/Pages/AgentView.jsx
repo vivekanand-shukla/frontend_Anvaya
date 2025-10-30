@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-const API = 'http://localhost:3000';
+import {useMainUrl} from  "./useMainUrl"
+const { mainUrl } = useMainUrl()
+const API = mainUrl;
 import { Link } from 'react-router-dom';
 
 export default function AgentView() {
