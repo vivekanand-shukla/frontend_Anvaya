@@ -112,7 +112,7 @@ export default function Lead() {
       setEditingId(null);
       setEditText('');
       getComments(id)
-      toast.error('comment updated');;
+      toast.success('comment updated');;
     } catch (err) {
       console.error(err);
        toast.error('Failed to update comment');
