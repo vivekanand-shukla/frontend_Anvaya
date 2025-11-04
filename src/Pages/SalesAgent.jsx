@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+
 import {useMainUrl} from  "./useMainUrl"
 const { mainUrl } = useMainUrl()
 const API = mainUrl;

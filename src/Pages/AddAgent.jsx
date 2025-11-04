@@ -20,14 +20,14 @@ export default function AddAgent() {
     try {
       const res = await axios.post(`${API}/agents`, form);
       if (res.status === 201 || res.status === 200) {
-        alert("Agent created successfully!");
+        toast.success("Agent created successfully!");
         setForm({ name: "", email: "" });
       } else {
-        alert("Failed to create agent");
+         toast.error("Failed to create agent");
       }
     } catch (err) {
       console.error(err);
-      alert("Error creating agent");
+       toast.error("Error creating agent");
     } finally {
       setLoading(false);
     }

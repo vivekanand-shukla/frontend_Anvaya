@@ -86,9 +86,10 @@ export default function Lead() {
       });
       setNewComment('');
       getComments(id);
+      toast.success(' comment added');
     } catch (err) {
       console.error(err);
-      alert('Failed to add comment');
+       toast.success('Failed to add comment');
     }
   };
 
@@ -110,10 +111,11 @@ export default function Lead() {
       });
       setEditingId(null);
       setEditText('');
-      getComments(id);
+      getComments(id)
+      toast.error('comment updated');;
     } catch (err) {
       console.error(err);
-      alert('Failed to update comment');
+       toast.error('Failed to update comment');
     }
   };
 
@@ -123,9 +125,10 @@ export default function Lead() {
     try {
       await axios.delete(`${API}/leads/${id}/comments/${cid}`);
       getComments(id);
+         toast.success('comment deleted');
     } catch (err) {
       console.error(err);
-      alert('Failed to delete comment');
+       toast.error('Failed to delete comment');
     }
   };
 
@@ -136,12 +139,12 @@ export default function Lead() {
         tags: formData.tags.split(',').map((t) => t.trim()),
       };
       await axios.put(`${API}/leads/${id}`, payload);
-      alert('Lead updated successfully!');
+       toast.success('Lead updated successfully!');
       setShowUpdateForm(false);
       getLead(id);
     } catch (err) {
       console.error(err);
-      alert('Failed to update lead');
+       toast.error('Failed to update lead');
     }
   };
 

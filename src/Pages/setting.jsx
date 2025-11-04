@@ -33,14 +33,14 @@ export default function LeadPage() {
     try {
       const res = await axios.delete(`${API}/leads/${id}`);
       if (res.status === 200) {
-        alert("Lead deleted successfully");
+         toast.success("Lead deleted successfully");
         setLeads(leads.filter((lead) => lead.id !== id)); 
       } else {
-        alert("Failed to delete lead");
+         toast.error("Failed to delete lead");
       }
     } catch (err) {
       console.error(err);
-      alert("Error deleting lead");
+       toast.error("Error deleting lead");
     }
   };
 

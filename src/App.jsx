@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './App.css'; 
 import {useMainUrl} from  "./Pages/useMainUrl"
-import { toast } from "react-toastify";
+
 const { mainUrl } = useMainUrl()
 const API = mainUrl;
 

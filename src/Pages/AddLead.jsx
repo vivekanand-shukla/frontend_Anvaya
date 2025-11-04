@@ -58,9 +58,9 @@ export default function AddLead() {
       });
 
       if (response.status === 200 || response.status === 201) {
-        alert('Lead created successfully!');
+       toast.success('Lead created successfully!');
       } else {
-        alert('Error: Failed to create lead');
+         toast.error('Error: Failed to create lead');
       }
     } catch (e) {
       console.log(e);

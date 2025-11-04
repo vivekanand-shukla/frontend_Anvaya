@@ -4,7 +4,7 @@ import {useMainUrl} from  "./useMainUrl"
 const { mainUrl } = useMainUrl()
 const API = mainUrl;
 import { Link } from 'react-router-dom';
-import { toast } from "react-toastify";
+
 export default function StatusView() {
   const [d, setD] = useState([]);
   const [a, setA] = useState([]);
