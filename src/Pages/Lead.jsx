@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-
-import {useMainUrl} from  "./useMainUrl"
+import { toast } from "react-toastify";
+import { useMainUrl } from "./useMainUrl"
 const { mainUrl } = useMainUrl()
 const API = mainUrl;
 
@@ -145,13 +145,7 @@ export default function Lead() {
     }
   };
 
-  if (!lead) {
-    return (
-      <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
-        <h3>Lead not found</h3>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="container-fluid p-0 vh-100 d-flex flex-column flex-md-row lead-page">
@@ -165,9 +159,11 @@ export default function Lead() {
 
       {/* Main Content */}
       <div className="flex-fill overflow-auto bg-light p-3 p-md-4 main-content">
-        <h2 className="mb-4 text-center text-md-start">Lead Management: {lead.name}</h2>
+        <h2 className="mb-4 text-center text-md-start">
+          Lead Management: {lead?.name || 'Loading...'}
+        </h2>
 
-        {loading && (
+        {!lead && (
           <div className="d-flex align-items-center justify-content-center vh-100">
             <div className="spinner-border text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -175,221 +171,204 @@ export default function Lead() {
           </div>
         )}
 
-        {/* Lead Details Card */}
-        <div className="card mb-4 shadow-sm">
-          <div className="card-header bg-primary text-white">
-            <h5 className="mb-0">Lead Details</h5>
-          </div>
-          <div className="card-body">
-            <p><strong>Lead Name:</strong> {lead.name}</p>
-            <p><strong>Sales Agent:</strong> {lead.salesAgent?.name || 'Unassigned'}</p>
-            <p><strong>Lead Source:</strong> {lead.source}</p>
-            <p><strong>Status:</strong> {lead.status}</p>
-            <p><strong>Priority:</strong> {lead.priority}</p>
-            <p><strong>Time to Close:</strong> {lead.timeToClose} Days</p>
-            <p><strong>Tags:</strong> {lead.tags?.join(', ')}</p>
+        {lead && (
+          <div className="card mb-4 shadow-sm">
+            <div className="card-header bg-primary text-white">
+              <h5 className="mb-0">Lead Details</h5>
+            </div>
+            <div className="card-body">
+              <p><strong>Lead Name:</strong> {lead?.name}</p>
+              <p><strong>Sales Agent:</strong> {lead?.salesAgent?.name || 'Unassigned'}</p>
+              <p><strong>Lead Source:</strong> {lead?.source}</p>
+              <p><strong>Status:</strong> {lead?.status}</p>
+              <p><strong>Priority:</strong> {lead?.priority}</p>
+              <p><strong>Time to Close:</strong> {lead?.timeToClose} Days</p>
+              <p><strong>Tags:</strong> {lead?.tags?.join(', ')}</p>
 
-            {!showUpdateForm ? (
-              <button className="btn btn-warning w-100 mt-3" onClick={() => setShowUpdateForm(true)}>
-                Edit Lead Details
-              </button>
-            ) : (
-              <button className="btn btn-primary w-100 mt-3">
-                You can update your details below
-              </button>
-            )}
+              {!showUpdateForm ? (
+                <button className="btn btn-warning w-100 mt-3" onClick={() => setShowUpdateForm(true)}>
+                  Edit Lead Details
+                </button>
+              ) : (
+                <button className="btn btn-primary w-100 mt-3">
+                  You can update your details below
+                </button>
+              )}
 
-            {showUpdateForm && (
-              <div className="mt-4">
-                <div className="row g-3">
-                  <div className="col-md-6 col-12">
-                    <label className="form-label">Lead Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    />
-                  </div>
-                  <div className="col-md-6 col-12">
-                    <label className="form-label">Sales Agent</label>
-                    <select
-                      className="form-select"
-                      value={formData.salesAgent}
-                      onChange={(e) => setFormData({ ...formData, salesAgent: e.target.value })}
-                    >
-                      <option value="">Select Sales Agent</option>
-                      {agents.map((agent) => (
-                        <option key={agent.id} value={agent.id}>
-                          {agent.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="col-md-6 col-12">
-                    <label className="form-label">Lead Source</label>
-                    <select
-                      className="form-select"
-                      value={formData.source}
-                      onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-                    >
-                      <option>Website</option>
-                      <option>Referral</option>
-                      <option>Cold Call</option>
-                      <option>Advertisement</option>
-                      <option>Email</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-6 col-12">
-                    <label className="form-label">Status</label>
-                    <select
-                      className="form-select"
-                      value={formData.status}
-                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    >
-                      <option>New</option>
-                      <option>Contacted</option>
-                      <option>Qualified</option>
-                      <option>Proposal Sent</option>
-                      <option>Closed</option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-6 col-12">
-                    <label className="form-label">Priority</label>
-                    <select
-                      className="form-select"
-                      value={formData.priority}
-                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                    >
-                      <option>High</option>
-                      <option>Medium</option>
-                      <option>Low</option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-6 col-12">
-                    <label className="form-label">Time to Close (Days)</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={formData.timeToClose}
-                      onChange={(e) => setFormData({ ...formData, timeToClose: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-12">
-                    <label className="form-label">Tags (comma separated)</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={formData.tags}
-                      onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="d-flex gap-2 mt-3">
-                  <button className="btn btn-success flex-fill" onClick={updateLead}>
-                    Save Changes
-                  </button>
-                  <button className="btn btn-secondary flex-fill" onClick={() => setShowUpdateForm(false)}>
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Comments Section */}
-        <div className="card shadow-sm">
-          <div className="card-header bg-success text-white">
-            <h5 className="mb-0">Comments Section</h5>
-          </div>
-          <div className="card-body comment-area">
-            {comments.length === 0 ? (
-              <p className="text-muted text-center py-4">No comments yet</p>
-            ) : (
-              comments.map((c) => (
-                <div key={c.id} className="border-bottom pb-3 mb-3">
-                  {editingId === c.id ? (
-                    <>
+              {showUpdateForm && (
+                <div className="mt-4">
+                  <div className="row g-3">
+                    <div className="col-md-6 col-12">
+                      <label className="form-label">Lead Name</label>
                       <input
                         type="text"
-                        className="form-control mb-2"
-                        value={editText}
-                        onChange={(e) => setEditText(e.target.value)}
+                        className="form-control"
+                        value={formData?.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       />
-                      <div className="d-flex gap-2">
-                        <button className="btn btn-sm btn-success" onClick={() => saveEdit(c.id)}>Save</button>
-                        <button className="btn btn-sm btn-secondary" onClick={cancelEdit}>Cancel</button>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="d-flex justify-content-between mb-2">
-                        <strong>{c.author}</strong>
-                        <div className="d-flex gap-2 align-items-center">
-                          <small className="text-muted">{new Date(c.createdAt).toLocaleString()}</small>
-                          <button className="btn btn-sm btn-outline-primary border-0" onClick={() => startEdit(c)}>✏️</button>
-                          <button className="btn btn-sm btn-outline-danger border-0" onClick={() => deleteComment(c.id)}>🗑️</button>
-                        </div>
-                      </div>
-                      <p className="mb-0">Comment: {c.commentText}</p>
-                    </>
-                  )}
+                    </div>
+                    <div className="col-md-6 col-12">
+                      <label className="form-label">Sales Agent</label>
+                      <select
+                        className="form-select"
+                        value={formData?.salesAgent}
+                        onChange={(e) => setFormData({ ...formData, salesAgent: e.target.value })}
+                      >
+                        <option value="">Select Sales Agent</option>
+                        {agents?.map((agent) => (
+                          <option key={agent?.id} value={agent?.id}>
+                            {agent?.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="col-md-6 col-12">
+                      <label className="form-label">Lead Source</label>
+                      <select
+                        className="form-select"
+                        value={formData?.source}
+                        onChange={(e) => setFormData({ ...formData, source: e.target.value })}
+                      >
+                        <option>Website</option>
+                        <option>Referral</option>
+                        <option>Cold Call</option>
+                        <option>Advertisement</option>
+                        <option>Email</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6 col-12">
+                      <label className="form-label">Status</label>
+                      <select
+                        className="form-select"
+                        value={formData?.status}
+                        onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                      >
+                        <option>New</option>
+                        <option>Contacted</option>
+                        <option>Qualified</option>
+                        <option>Proposal Sent</option>
+                        <option>Closed</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6 col-12">
+                      <label className="form-label">Priority</label>
+                      <select
+                        className="form-select"
+                        value={formData?.priority}
+                        onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      >
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6 col-12">
+                      <label className="form-label">Time to Close (Days)</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={formData?.timeToClose}
+                        onChange={(e) => setFormData({ ...formData, timeToClose: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="col-12">
+                      <label className="form-label">Tags (comma separated)</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={formData?.tags}
+                        onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="d-flex gap-2 mt-3">
+                    <button className="btn btn-success flex-fill" onClick={updateLead}>
+                      Save Changes
+                    </button>
+                    <button className="btn btn-secondary flex-fill" onClick={() => setShowUpdateForm(false)}>
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-              ))
-            )}
+              )}
+            </div>
           </div>
-          <div className="card-footer">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Add New Comment..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && addComment()}
-            />
-            <button className="btn btn-success w-100" onClick={addComment}>
-              Submit Comment
-            </button>
+        )}
+
+        {lead && (
+          <div className="card shadow-sm">
+            <div className="card-header bg-success text-white">
+              <h5 className="mb-0">Comments Section</h5>
+            </div>
+            <div className="card-body comment-area">
+              {comments?.length === 0 ? (
+                <p className="text-muted text-center py-4">No comments yet</p>
+              ) : (
+                comments?.map((c) => (
+                  <div key={c?.id} className="border-bottom pb-3 mb-3">
+                    {editingId === c?.id ? (
+                      <>
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          value={editText}
+                          onChange={(e) => setEditText(e.target.value)}
+                        />
+                        <div className="d-flex gap-2">
+                          <button className="btn btn-sm btn-success" onClick={() => saveEdit(c?.id)}>Save</button>
+                          <button className="btn btn-sm btn-secondary" onClick={cancelEdit}>Cancel</button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="d-flex justify-content-between mb-2">
+                          <strong>{c?.author}</strong>
+                          <div className="d-flex gap-2 align-items-center">
+                            <small className="text-muted">{new Date(c?.createdAt).toLocaleString()}</small>
+                            <button className="btn btn-sm btn-outline-primary border-0" onClick={() => startEdit(c)}>✏️</button>
+                            <button className="btn btn-sm btn-outline-danger border-0" onClick={() => deleteComment(c?.id)}>🗑️</button>
+                          </div>
+                        </div>
+                        <p className="mb-0">Comment: {c?.commentText}</p>
+                      </>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+            <div className="card-footer">
+              <input
+                type="text"
+                className="form-control mb-2"
+                placeholder="Add New Comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addComment()}
+              />
+              <button className="btn btn-success w-100" onClick={addComment}>
+                Submit Comment
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <style>{`
         @media (max-width: 550px) {
-          .lead-page {
-            flex-direction: column !important;
-            height: auto !important;
-          }
-          .sidebar-area {
-            width: 100% !important;
-            text-align: center;
-            min-height: auto !important;
-          }
-          .main-content {
-            padding: 1rem !important;
-            width: 100%;
-          }
-          .comment-area {
-            max-height: 300px !important;
-          }
-          h2 {
-            font-size: 1.3rem !important;
-            text-align: center;
-          }
-          .card {
-            margin-bottom: 1rem !important;
-          }
-          .btn, .form-control, .form-select {
-            font-size: 0.9rem !important;
-          }
+          .lead-page { flex-direction: column !important; height: auto !important; }
+          .sidebar-area { width: 100% !important; text-align: center; min-height: auto !important; }
+          .main-content { padding: 1rem !important; width: 100%; }
+          .comment-area { max-height: 300px !important; }
+          h2 { font-size: 1.3rem !important; text-align: center; }
+          .card { margin-bottom: 1rem !important; }
+          .btn, .form-control, .form-select { font-size: 0.9rem !important; }
         }
       `}</style>
     </div>

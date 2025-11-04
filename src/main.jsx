@@ -12,6 +12,8 @@ import StatusLead from "./Pages/StatusView"
 import AddAgent from './Pages/AddAgent'
 import AgentView from './Pages/AgentView'
 import Report from './Pages/Report'
+import Setting from './Pages/setting.jsx'
+import { ToastContainer  } from "react-toastify";
 const routes = createBrowserRouter([
   {path: "/" , element:<App/> } ,
   {path: "/lead/:id" , element:<Lead/> } ,
@@ -23,10 +25,12 @@ const routes = createBrowserRouter([
    {path: "/addagent" , element:<AddAgent/> } ,
    {path: "/agentview" , element:<AgentView/> } ,
    {path: "/report" , element:<Report/> } ,
+   {path: "/setting" , element:<Setting/> } ,
 
 ])
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={routes} />
+    <ToastContainer />
   </StrictMode>,
 )

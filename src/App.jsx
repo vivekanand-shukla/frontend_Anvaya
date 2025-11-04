@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import './App.css'; 
 import {useMainUrl} from  "./Pages/useMainUrl"
+import { toast } from "react-toastify";
 const { mainUrl } = useMainUrl()
 const API = mainUrl;
 
@@ -78,6 +79,11 @@ export default function App() {
               <li className="nav-item mb-2">
                 <Link className="nav-link text-white" to="/report">
                   Report
+                </Link>
+              </li>
+              <li className="nav-item mb-2">
+                <Link className="nav-link text-white" to="/setting">
+                  Settings
                 </Link>
               </li>
             </ul>
