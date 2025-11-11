@@ -116,10 +116,10 @@ Sample Response:
   "id": "...", 
   "name": "...", 
   "source": "...", 
-  "salesAgent": {...}, 
+  "salesAgent": {"..."}, 
   "status": "...", 
-  "tags": [...], 
-  "timeToClose": ..., 
+  "tags": ["..."], 
+  "timeToClose": "...", 
   "priority": "...",
   "createdAt": "...",
   "updatedAt": "..."
@@ -135,10 +135,10 @@ Sample Response:
     "id": "...", 
     "name": "...", 
     "source": "...", 
-    "salesAgent": {...}, 
+    "salesAgent": {"..."}, 
     "status": "...", 
-    "tags": [...], 
-    "timeToClose": ..., 
+    "tags": ["..."], 
+    "timeToClose": "...", 
     "priority": "...",
     "createdAt": "..."
   }
@@ -153,10 +153,10 @@ Sample Response:
   "id": "...", 
   "name": "...", 
   "source": "...", 
-  "salesAgent": {...}, 
+  "salesAgent": {"..."}, 
   "status": "...", 
-  "tags": [...], 
-  "timeToClose": ..., 
+  "tags": ["..."], 
+  "timeToClose": "...", 
   "priority": "...",
   "updatedAt": "..."
 }
@@ -175,7 +175,7 @@ Sample Response:
 ```json
 { 
   "message": "agent saved", 
-  "savedagent": {...}
+  "savedagent": {"..."}
 }
 ```
 
@@ -279,7 +279,7 @@ Sample Response:
 Get total leads in pipeline  
 Sample Response:
 ```json
-{ "totalLeadsInPipeline": ... }
+{ "totalLeadsInPipeline": "..." }
 ```
 
 ## Contact
