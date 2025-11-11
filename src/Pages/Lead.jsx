@@ -125,7 +125,7 @@ export default function Lead() {
     try {
       await axios.delete(`${API}/leads/${id}/comments/${cid}`);
       getComments(id);
-         toast.success('comment deleted');
+         toast.error('comment deleted');
     } catch (err) {
       console.error(err);
        toast.error('Failed to delete comment');
